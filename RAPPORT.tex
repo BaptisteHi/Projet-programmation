@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Rapport projet programmation : partie I}
+\author{Baptiste Hilaire }
+\date{October 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Méthodes utilisées}
+\hspace{0.5 cm}
+Afin de réaliser la première partie de ce projet de programmation, j'ai implémenté mon lexer et mon arbre syntaxique via Ocamllex et Ocamlyacc. J'ai notamment utilisé ceux fournis par l'interpréteur de Lisp iLisp, et j'ai défini un type récursif simple pour mon arbre syntaxique, sans définir de fonctions sur mon arbre pour le construire dans le parser. J'ai ensuite écrit un compilateur en Ocaml qui écrit dans un fichier file.s le code assembleur permettant de réaliser l'opération passée en argument de aritha. Ce code contient une fonction de compilation qui écrit directement une chaîne de caractères, sans passer par le module X86 64, et qui ne traîte pas les cas de conversions entier-flottant ou flottant-entier, par manque de temps. Implémenter ces fonctions aurait aussi posé un problème dans mon code de par mon implémentation naïve d'un booléen permettant de déterminer si l'on veut renvoyer un entier ou bien un flottant. L'invariant dans les opérations implémentées est que les éléments dont on fait l'opération sont toujours sur le sommet de la pile, et donc le résultat aussi à la fin des calculs.
+
+\section{Difficultés rencontrées}
+\hspace{0.5 cm}
+Une première difficulté que j'ai rencontré est la création de l'arbre dans le parser est l'oscillation entre expressions entières et flottantes, mais la vraie difficulté était ensuite dans l'implémentation du compilateur. Plusieurs problèmes sont intervenus : détecter si l'expression est entière ou flottante, déclarer les variables à la fin du code si jamais on utilisait des flottants, ce que j'ai d'abord essayé de faire avec une référence dans la fonction principale, mais la fonction auxiliaire ne pouvait visiblement pas la modifier. J'ai donc écrit une deuxième fonction pour cela. Un problème en découlant est la numérotation des flottants, de même je ne pouvait pas utiliser un indice référence en dehors de la fonction auxiliaire, j'ai donc opté pour une méthode moins optimale et qui peut donner lieu à des erreurs où deux flottants ont le même numéro si les expressions passées en argument sont trop longues, mais cela ne pose pas de soucis pour les petites expressions ayant moins de 20 opérations. Un dernier détail : écrivant le code en chaîne de caractère, je ne suis pas parvenu à rajouter un backslash n à la fin de mon message du printf, ce qui donne un résultat un peu brouillon lors de la compilation..
+\end{document}
